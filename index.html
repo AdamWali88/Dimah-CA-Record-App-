@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b5d">
+<meta name="description" content="Dimah Academy Students' Continuous Assessment Record with CSV score exchange">
+<link rel="manifest" href="manifest.json">
+<title>Dimah Academy — Students' Continuous Assessment Record</title>
+<style>
+:root{--navy:#12345a;--blue:#1769aa;--teal:#0d9488;--gold:#f2b84b;--bg:#f3f6f9;--card:#fff;--text:#17212b;--muted:#6b7785;--line:#dce3e9;--danger:#b52b2b;--shadow:0 10px 30px rgba(18,59,93,.10);--radius:18px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.hidden{display:none!important}.app{min-height:100vh}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.18),transparent 25%),linear-gradient(135deg,#092d49,var(--blue) 55%,var(--teal));position:relative;overflow:hidden}
+.login:before,.login:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.06)}.login:before{width:360px;height:360px;right:-130px;top:-100px}.login:after{width:280px;height:280px;left:-120px;bottom:-100px}
+.login-card{width:min(460px,100%);background:rgba(255,255,255,.97);border-radius:28px;padding:30px;box-shadow:0 25px 70px rgba(0,0,0,.25);position:relative;z-index:1}
+.brand{text-align:center}.logo{width:78px;height:78px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 4px 15px rgba(0,0,0,.14);background:#e8eef3}.login-title{font-size:20px;font-weight:900;color:var(--navy);margin:12px 0 7px}.school{font-size:14px;font-weight:800;line-height:1.45;color:#34495e;text-transform:uppercase}.subtitle{color:var(--muted);font-size:13px;margin:7px 0 24px}
+.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px;color:#465564}.field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,105,170,.10)}
+.primary{background:var(--navy);color:white;padding:12px 16px;border-radius:12px;font-weight:800}.primary:hover{filter:brightness(1.08)}.secondary{background:#eaf1f6;color:var(--navy);padding:11px 15px;border-radius:12px;font-weight:800}.danger{background:#fdecec;color:var(--danger);padding:11px 15px;border-radius:12px;font-weight:800}.small{font-size:12px}.error{color:var(--danger);background:#fff0f0;padding:9px;border-radius:10px;margin:10px 0;font-size:12px;font-weight:700}
+.shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.sidebar{background:#0d304a;color:#fff;padding:18px 14px;position:sticky;top:0;height:100vh}.side-brand{padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:14px}.side-brand .side-logo{width:52px;height:52px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.9);display:block;margin:0 auto 10px}.side-brand .school-mini{font-size:11px;line-height:1.4;font-weight:800;text-align:center}.nav button{display:flex;align-items:center;gap:11px;width:100%;padding:12px 12px;margin:4px 0;border-radius:12px;background:transparent;color:#dce9f2;text-align:left;font-weight:750}.nav button.active,.nav button:hover{background:rgba(255,255,255,.12);color:#fff}.side-bottom{position:absolute;bottom:15px;left:14px;right:14px}.content{min-width:0}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:fixed;top:0;left:250px;right:0;z-index:25}.topbar h1{font-size:19px;margin:0;color:var(--navy)}.top-user{display:flex;align-items:center;gap:10px;white-space:nowrap}.user-pill{font-size:12px;font-weight:800;color:#516171}.user-pill b{color:var(--navy)}.user-pill span{color:var(--teal)}.mobile-menu{display:none;background:#eaf1f6;color:var(--navy);border-radius:10px;padding:9px 11px}
+.main{padding:95px 25px 25px;max-width:1450px;margin:auto}.brand-strip{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;box-shadow:var(--shadow);margin-bottom:16px}.brand-strip img{width:62px;height:62px;border-radius:50%;object-fit:cover;border:3px solid #e5edf3}.brand-strip .school-name{font-size:15px;font-weight:900;color:var(--navy);line-height:1.35;text-transform:uppercase}.brand-strip .app-name{font-size:12px;font-weight:800;color:var(--muted);margin-top:4px}.dashboard-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.meta-chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800;color:#e8f4fb}.module-grid{grid-template-columns:repeat(2,1fr)}.module{position:relative;min-height:170px;padding:22px}.module .module-arrow{position:absolute;right:18px;bottom:18px;color:var(--navy);font-size:16px;font-weight:900}.module .secondary{display:inline-block}.hero{background:linear-gradient(110deg,var(--navy),var(--blue));color:white;border-radius:22px;padding:25px;box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:20px;align-items:center}.hero h2{margin:0 0 7px;font-size:25px}.hero p{margin:0;color:#dcecf7;font-size:13px}.hero-badge{background:rgba(255,255,255,.12);padding:12px 15px;border-radius:14px;font-size:12px;font-weight:800;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}.stat .label{font-size:12px;color:var(--muted);font-weight:750}.stat .num{font-size:29px;font-weight:900;color:var(--navy);margin-top:5px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 12px}.section-title h3{margin:0;color:var(--navy);font-size:17px}.actions{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.table{width:100%;border-collapse:collapse;min-width:680px;background:white}.table th,.table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}.table th{background:#f5f8fa;color:#4c5b69;font-size:11px;text-transform:uppercase;letter-spacing:.03em}.table tr:last-child td{border-bottom:0}.empty{padding:35px;text-align:center;color:var(--muted);font-size:13px}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.module{padding:20px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);text-align:left}.module .icon{font-size:27px}.module h4{margin:10px 0 5px;color:var(--navy);font-size:15px}.module p{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 14px}
+.csv-panel{margin-top:16px;padding:14px;border:1px solid #d5e5ef;border-radius:14px;background:#f5fbfe}.csv-panel h4{margin:0 0 6px;color:var(--navy)}.csv-panel p{font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 12px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:end}.toolbar .field{min-width:150px;flex:1}.toolbar .field.wide{flex:2}.notice{padding:11px 13px;border-radius:12px;background:#eef7fb;color:#31556f;font-size:12px;line-height:1.5}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 15px}.tab{padding:9px 12px;border-radius:10px;background:#edf2f6;color:#496071;font-weight:800;font-size:12px}.tab.active{background:var(--navy);color:#fff}
+.modal{position:fixed;inset:0;background:rgba(9,29,44,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.modal.open{display:flex}.modal-card{background:white;width:min(700px,100%);max-height:90vh;overflow:auto;border-radius:20px;padding:22px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modal-head h3{margin:0;color:var(--navy)}.x{background:#edf2f6;border-radius:50%;width:34px;height:34px;font-weight:900}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}.check{display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700}.toast{position:fixed;right:18px;bottom:18px;background:var(--navy);color:#fff;padding:12px 15px;border-radius:12px;box-shadow:var(--shadow);font-size:12px;font-weight:750;z-index:60;display:none}.toast.show{display:block}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.module-grid{grid-template-columns:repeat(2,1fr)}.shell{grid-template-columns:1fr}.sidebar{position:fixed;left:-270px;width:250px;z-index:30;transition:.25s}.sidebar.open{left:0}.mobile-menu{display:block}.topbar{left:0;padding:0 15px}.main{padding:77px 15px 15px}}
+@media(max-width:620px){.result-table th,.result-table td{font-size:11px;padding:8px 4px}.result-table .result-input{width:50px!important;font-size:13px!important}.grid,.module-grid,.kpi-grid{grid-template-columns:1fr}.brand-strip{padding:13px}.brand-strip img{width:52px;height:52px}.top-user{gap:6px}.user-pill{font-size:11px}.hero{align-items:flex-start;flex-direction:column}.row{grid-template-columns:1fr}.login-card{padding:22px}.main{padding:74px 12px 12px}.topbar{height:62px}}
+@media print{body{background:#fff}.sidebar,.topbar,.no-print,.modal,.toast{display:none!important}.shell{display:block}.main{padding:0;max-width:none}.card,.hero{box-shadow:none;border:0}.print-head{display:block!important}.table{min-width:0}.table th,.table td{font-size:10px;padding:6px}}
+.print-head{display:none;text-align:center;margin-bottom:15px}.print-head .school-print{font-size:18px;font-weight:900;text-transform:uppercase}.print-head .title-print{font-size:15px;font-weight:800;margin-top:4px}
+.exam-paper{max-width:850px;margin:0 auto;color:#111;font-family:Arial,Helvetica,sans-serif}.exam-paper-head{text-align:center;margin-bottom:12px}.exam-paper-school{font-size:18px;font-weight:900;text-transform:uppercase;line-height:1.25}.exam-paper-title{font-size:15px;font-weight:900;text-transform:uppercase;margin-top:5px}.exam-meta{margin-top:10px;font-size:12px;line-height:1.7}.exam-meta-row{display:flex;gap:28px;flex-wrap:wrap}.exam-label{font-weight:800}.exam-instructions{margin:12px 0 14px;font-size:12px;line-height:1.55}.exam-section-title{text-align:center;font-weight:900;font-size:14px;margin:15px 0 7px;text-transform:uppercase}.exam-section-sub{text-align:center;font-weight:700;font-size:12px;margin-bottom:12px}.exam-question{font-size:13px;line-height:1.45;margin:0 0 10px;white-space:pre-wrap}.exam-essay{margin-bottom:11px}.exam-print-actions{margin-bottom:15px}.exam-paper ol{padding-left:27px;margin-top:6px}.exam-paper ol li{padding-left:4px;margin-bottom:9px}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:#eaf1f6;color:var(--navy);padding:10px 14px;border-radius:11px;font-weight:800;font-size:12px}
+.score-box{width:88px;padding:8px 7px!important;text-align:center;font-weight:800}
+.print-box{border:1px solid #111;min-width:70px;height:25px;text-align:center}
+
+.app-footer{text-align:center;padding:22px 10px 10px;background:#f3f6f9;color:#7b8792;font-size:11px;font-weight:700}
+.app-footer b{color:var(--navy)}
+.result-input{width:72px!important;padding:3px 0!important;text-align:center;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important;-webkit-appearance:none;appearance:none}
+.score-box{width:72px!important;padding:3px 0!important;text-align:center;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important;-webkit-appearance:none;appearance:none}
+.edit-score-box{width:68px!important;padding:3px 0!important;text-align:center;font-weight:900;border:0!important;outline:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;-webkit-appearance:none;appearance:none}.edit-score-box:focus{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important}.delete-assessment{background:#fdecec;color:var(--danger);padding:8px 11px;border-radius:10px;font-weight:850}.edit-note{background:#fff8e8;color:#6d5318;padding:9px 11px;border-radius:10px;font-size:11px;line-height:1.45}
+.score-box:focus,.result-input:focus,.edit-score-box:focus{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important}
+.result-table{min-width:0!important;width:100%;table-layout:fixed}.result-table th,.result-table td{padding:9px 6px}.result-table th:nth-child(1),.result-table td:nth-child(1){width:42px;text-align:center}.result-table th:nth-child(2),.result-table td:nth-child(2){width:38%;text-align:left}.result-table th:nth-child(3),.result-table td:nth-child(3){width:13%;text-align:center}.result-table th:nth-child(4),.result-table td:nth-child(4){width:12%;text-align:center}.result-table th:nth-child(5),.result-table td:nth-child(5){width:14%;text-align:center}.result-table th:nth-child(6),.result-table td:nth-child(6){width:10%;text-align:center}.result-table .result-input{width:58px!important}.result-table td:nth-child(2) b{display:block;white-space:normal;line-height:1.25}.score-entry-table{min-width:0!important;width:100%}.score-entry-table th,.score-entry-table td{padding:9px 7px}.score-entry-table th:nth-child(1),.score-entry-table td:nth-child(1){width:42px;text-align:center}.score-entry-table th:nth-child(3),.score-entry-table td:nth-child(3){width:82px;text-align:center}.score-entry-table th:nth-child(4),.score-entry-table td:nth-child(4){width:76px;text-align:center}.score-entry-table td:nth-child(2){white-space:normal}.score-entry-table .student-name{font-weight:800;line-height:1.25}
+@media(max-width:620px){.score-entry-table th,.score-entry-table td{font-size:11px;padding:8px 5px}.score-entry-table th:nth-child(1),.score-entry-table td:nth-child(1){width:35px}.score-entry-table th:nth-child(3),.score-entry-table td:nth-child(3){width:70px}.score-entry-table th:nth-child(4),.score-entry-table td:nth-child(4){width:60px}.score-entry-table .score-box{width:55px!important;font-size:14px!important}.score-entry-table .student-name{font-size:12px}}
+@media print{.app-footer{display:none!important}}
+
+/* V32 compact school-branded dashboard */
+.dashboard-home{display:flex;flex-direction:column;gap:9px}.dashboard-home .brand-strip{margin:0;padding:9px 12px;border-radius:14px;gap:11px}.dashboard-home .brand-strip img{width:44px;height:44px}.dashboard-home .brand-strip .school-name{font-size:13px}.dashboard-home .brand-strip .app-name{font-size:10px}.dashboard-home .home-welcome{display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(110deg,var(--navy),var(--blue));color:#fff;border-radius:14px;padding:10px 13px}.dashboard-home .home-welcome h2{font-size:16px;line-height:1.2;margin:0}.dashboard-home .home-welcome p{font-size:10px;margin:3px 0 0;color:#eef7ff}.dashboard-home .home-badge{font-size:10px;font-weight:800;white-space:nowrap;background:#ffffff20;border-radius:9px;padding:7px}.dashboard-home .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:0}.dashboard-home .stat{padding:8px 9px;border-radius:12px;box-shadow:none}.dashboard-home .stat .label{font-size:9px;line-height:1.15}.dashboard-home .stat .num{font-size:20px;margin-top:3px}.dashboard-home .section-title{margin:1px 0 0}.dashboard-home .section-title h3{font-size:13px}.dashboard-home .module-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.dashboard-home .module{min-height:76px;padding:9px 10px;border-radius:13px;box-shadow:0 3px 10px rgba(18,52,90,.07);display:flex;flex-direction:row;align-items:center;gap:8px}.dashboard-home .module .icon{font-size:22px;flex-shrink:0}.dashboard-home .module h4{font-size:11px;line-height:1.2;margin:0;overflow-wrap:anywhere}.dashboard-home .module p{display:none}.dashboard-home .module .module-arrow{right:8px;bottom:5px;font-size:11px}.dashboard-home .module{padding-right:20px}.dashboard-home .home-footer{font-size:9px;text-align:center;color:var(--muted);margin-top:0}body:has(.dashboard-home) .app-footer{display:none}
+@media(max-width:1000px){.dashboard-home .module-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dashboard-home .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:620px){.dashboard-home{gap:7px}.dashboard-home .brand-strip{padding:7px 9px}.dashboard-home .brand-strip img{width:38px;height:38px}.dashboard-home .brand-strip .school-name{font-size:11px}.dashboard-home .brand-strip .app-name{font-size:9px}.dashboard-home .home-welcome{padding:8px 10px}.dashboard-home .home-welcome h2{font-size:14px}.dashboard-home .home-welcome p{font-size:9px}.dashboard-home .home-badge{font-size:9px;padding:6px}.dashboard-home .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.dashboard-home .stat{padding:7px 5px}.dashboard-home .stat .label{font-size:8px}.dashboard-home .stat .num{font-size:17px}.dashboard-home .module-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.dashboard-home .module{min-height:61px;padding:8px 17px 8px 8px;gap:6px}.dashboard-home .module .icon{font-size:19px}.dashboard-home .module h4{font-size:10px}.dashboard-home .module .module-arrow{right:6px;bottom:3px;font-size:10px}.main:has(.dashboard-home){padding-top:70px;padding-left:9px;padding-right:9px;padding-bottom:8px}.topbar{height:58px}.topbar h1{font-size:16px}.top-user .user-pill{font-size:9px}.top-user button{padding:7px 8px;font-size:10px}}
+</style>
+</head>
+<body>
+<div id="loginView" class="login">
+  <div class="login-card">
+    <div class="brand">
+      <img id="loginLogo" class="logo" alt="School logo">
+      <div id="loginSchool" class="school">DIMAH ACADEMY</div>
+      <div class="login-title">STUDENTS' CONTINUOUS ASSESSMENT RECORD</div>
+      <div class="subtitle">Secure offline academic record system</div>
+    </div>
+    <div id="loginError" class="error hidden"></div>
+    <div class="field"><label>Username</label><input id="username" autocomplete="username" value="admin"></div>
+    <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter password"></div>
+    <button class="primary" style="width:100%;margin-top:8px" onclick="login()">Login</button>
+    <div style="text-align:center;margin-top:13px;color:#758493;font-size:11px">Developed by MARAL COMPUTERS KADUNA</div>
+  </div>
+</div>
+
+<div id="appView" class="shell hidden">
+<aside id="sidebar" class="sidebar">
+  <div class="side-brand"><img id="sideLogo" class="side-logo" alt="School logo"><div style="font-weight:900;font-size:14px;text-align:center;margin-bottom:6px">CA RECORD</div><div id="sideSchool" class="school-mini"></div></div>
+  <nav class="nav">
+    <button data-page="dashboard" onclick="showPage('dashboard')">🏠 <span>Dashboard</span></button>
+    <button data-page="students" onclick="showPage('students')">👨‍🎓 <span>Students</span></button>
+    <button data-page="assessment" onclick="showPage('assessment')">📝 <span>Assessment</span></button>
+    <button data-page="questions" onclick="showPage('questions')">❓ <span>Question Bank</span></button>
+    <button data-page="terminal" onclick="showPage('terminal')">📄 <span>Final Examination</span></button>
+    <button data-page="settings" onclick="showPage('settings')">⚙️ <span>App / Admin Settings</span></button>
+  </nav>
+  <div class="side-bottom"><button class="danger" style="width:100%" onclick="logout()">↪ Logout</button></div>
+</aside>
+<main class="content">
+  <header class="topbar"><div style="display:flex;align-items:center;gap:10px"><button class="mobile-menu" onclick="toggleSide()">☰</button><h1 id="pageTitle">Dashboard</h1></div><div class="top-user"><div class="user-pill"><b>Administrator</b><span>• Offline Mode</span></div><button class="secondary small" onclick="logout()">Logout</button></div></header>
+  <div id="main" class="main"></div>
+</main>
+</div>
+<div class="app-footer">Developed by <b>MARAL COMPUTERS KADUNA</b></div>
+
+<div id="modal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle"></h3><button class="x" onclick="closeModal()">×</button></div><div id="modalBody"></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='dimah_academy_ca_record_v1';
+const defaults={
+  school:"DIMAH ACADEMY",
+  title:"STUDENTS' CONTINUOUS ASSESSMENT RECORD",
+  facilitator:"",
+  session:"",
+  term:"",
+  logo:"",
+  username:"admin",
+  password:"admin123",
+  students:[],
+  assessments:[],
+  finalScores:{},
+  questionSets:[],
+  exams:[],
+  classes:[],
+  currentClassId:""
+};
+let db=load(); let currentPage='dashboard';
+function load(){try{return {...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return {...defaults}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db)); syncAuthStorage();}
+function syncAuthStorage(){localStorage.setItem(KEY+'_auth',JSON.stringify({username:db.username,password:db.password}));}
+function normalizeDb(){db.classes=Array.isArray(db.classes)?db.classes:[];db.currentClassId=db.currentClassId||'';db.finalScores=db.finalScores&&typeof db.finalScores==='object'?db.finalScores:{};db.students=(db.students||[]).map(s=>({...s,classId:s.classId||''}));const auth=(()=>{try{return JSON.parse(localStorage.getItem(KEY+'_auth')||'null')}catch(e){return null}})();if(auth&&typeof auth.username==='string'&&auth.username.trim()){db.username=auth.username.trim();if(typeof auth.password==='string'&&auth.password)db.password=auth.password;}syncAuthStorage();}
+function classLabel(c){return c?`${c.name}${c.section?` ${c.section}`:''}`:''}
+function currentClass(){return db.classes.find(c=>c.id===db.currentClassId)||null}
+function classStudents(){const c=currentClass();return c?db.students.filter(s=>s.classId===c.id):[]}
+function legacyStudents(){return db.students.filter(s=>!s.classId)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function schoolInitials(){const words=String(db.school||"School").trim().split(/\s+/).filter(Boolean);return (words.slice(0,2).map(w=>w.replace(/[^a-z0-9]/ig,"")[0]||"").join("")||"SC").toUpperCase()}
+function logoSrc(){return db.logo||'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" rx="100" fill="#e8eef3"/><circle cx="100" cy="100" r="78" fill="var(--navy)"/><text x="100" y="116" text-anchor="middle" font-family="Arial" font-size="58" font-weight="bold" fill="white">${schoolInitials()}</text></svg>`.replace('var(--navy)','#1769aa'))}
+function applySchoolTheme(){const fallback=['#12345a','#1769aa','#0d9488','#f2b84b'];if(!db.logo){setThemeColors(fallback);return}const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0,64,64);const d=x.getImageData(0,0,64,64).data,counts={};for(let i=0;i<d.length;i+=4){if(d[i+3]<180)continue;const r=d[i],g=d[i+1],b=d[i+2],max=Math.max(r,g,b),min=Math.min(r,g,b),sat=max?((max-min)/max):0;if(max>246&&min>230)continue;if(max<28)continue;if(sat<.12&&max>125)continue;const q=[r,g,b].map(v=>Math.min(255,Math.round(v/32)*32));const hex='#'+q.map(v=>Math.min(255,v).toString(16).padStart(2,'0')).join('');counts[hex]=(counts[hex]||0)+1}const ranked=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);const distinct=[];for(const color of ranked){if(!distinct.some(c=>colorDistance(c,color)<70))distinct.push(color);if(distinct.length===4)break}if(distinct.length){const primary=ensureDarkColor(distinct[0]),secondary=distinct[1]||fallback[1],tertiary=distinct[2]||fallback[2],accent=distinct[3]||fallback[3];setThemeColors([primary,secondary,tertiary,accent])}else setThemeColors(fallback)}catch(e){setThemeColors(fallback)}};im.onerror=()=>setThemeColors(fallback);im.src=db.logo}
+function colorDistance(a,b){const x=a.match(/[a-f0-9]{2}/ig).map(v=>parseInt(v,16)),y=b.match(/[a-f0-9]{2}/ig).map(v=>parseInt(v,16));return Math.sqrt(x.reduce((n,v,i)=>n+(v-y[i])**2,0))}
+function ensureDarkColor(hex){const rgb=hex.match(/[a-f0-9]{2}/ig).map(v=>parseInt(v,16));const lum=(.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2])/255;if(lum>.48)return '#'+rgb.map(v=>Math.round(v*.62).toString(16).padStart(2,'0')).join('');return hex}
+
+function setThemeColors(colors){const root=document.documentElement;root.style.setProperty('--navy',colors[0]);root.style.setProperty('--blue',colors[1]);root.style.setProperty('--teal',colors[2]);root.style.setProperty('--gold',colors[3]);root.style.setProperty('--shadow',`0 10px 30px ${colors[0]}22`);const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=colors[0];const login=document.querySelector('.login');if(login)login.style.background=`radial-gradient(circle at 20% 20%,rgba(255,255,255,.18),transparent 25%),linear-gradient(135deg,${colors[0]},${colors[1]} 58%,${colors[2]})`;const sidebar=document.querySelector('.sidebar');if(sidebar)sidebar.style.background=colors[0];const hero=document.querySelector('.hero');if(hero)hero.style.background=`linear-gradient(110deg,${colors[0]},${colors[1]})`;const toastEl=document.querySelector('.toast');if(toastEl)toastEl.style.background=colors[0];document.querySelectorAll('.primary,.tab.active').forEach(el=>{el.style.background=colors[0];el.style.color='#fff'});document.querySelectorAll('.secondary,.mobile-menu,.back-btn').forEach(el=>{el.style.background=colors[1]+'18';el.style.color=colors[0]});document.querySelectorAll('.module').forEach(el=>{el.style.borderColor=colors[1]+'45'});document.querySelectorAll('.module .icon').forEach(el=>{el.style.color=colors[1]});document.querySelectorAll('.stat .num,.section-title h3,.topbar h1,.brand-strip .school-name,.login-title').forEach(el=>{el.style.color=colors[0]});document.querySelectorAll('.csv-panel').forEach(el=>{el.style.borderColor=colors[1]+'55';el.style.background=colors[1]+'0d'})}
+
+function init(){
+ normalizeDb();applySchoolTheme();
+ document.getElementById('loginLogo').src=logoSrc();document.getElementById('loginSchool').textContent=db.school;document.getElementById('username').value=db.username;
+ document.getElementById('sideSchool').textContent=db.school;document.getElementById('sideLogo').src=logoSrc();
+ // Always require a fresh login whenever the app is launched.
+ document.getElementById('loginView').classList.remove('hidden');
+ document.getElementById('appView').classList.add('hidden');
+
+}
+function login(){
+ const auth=(()=>{try{return JSON.parse(localStorage.getItem(KEY+'_auth')||'null')}catch(e){return null}})();
+ if(auth&&auth.username){db.username=String(auth.username).trim();db.password=String(auth.password||db.password);}
+ const u=document.getElementById('username').value.trim(),p=document.getElementById('password').value;
+ if(u===db.username&&p===db.password){localStorage.setItem(KEY+'_logged','1');document.getElementById('loginError').classList.add('hidden');openApp()}else{document.getElementById('loginError').textContent='Incorrect username or password.';document.getElementById('loginError').classList.remove('hidden')}
+}
+function logout(){localStorage.removeItem(KEY+'_logged');location.reload()}
+function openApp(){document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');showPage('dashboard')}
+function toggleSide(){document.getElementById('sidebar').classList.toggle('open')}
+function showPage(page){
+ currentPage=page;document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+ const titles={dashboard:'Dashboard',students:'Students',assessment:'Assessment',questions:'Question Bank',terminal:'Final Examination',settings:'App / Admin Settings'};
+ document.getElementById('pageTitle').textContent=titles[page]||'Dashboard';render();
+ document.getElementById('sidebar').classList.remove('open');
+}
+function render(){
+ const m=document.getElementById('main');
+ if(currentPage==='dashboard')m.innerHTML=dashboard();
+ if(currentPage==='students')m.innerHTML=studentsPage();
+ if(currentPage==='assessment')m.innerHTML=assessmentPage();
+ if(currentPage==='questions')m.innerHTML=questionsPage();
+ if(currentPage==='terminal')m.innerHTML=terminalPage();
+ if(currentPage==='settings')m.innerHTML=settingsPage();
+}
+function dashboard(){
+ const boys=db.students.filter(s=>s.gender==='Male').length,girls=db.students.length-boys;
+ return `<div class="dashboard-home"><div class="brand-strip"><img src="${logoSrc()}" alt="School logo"><div><div class="school-name">${esc(db.school)}</div><div class="app-name">${esc(db.title)}</div></div></div>
+ <section class="home-welcome"><div><h2>Welcome${db.facilitator?', '+esc(db.facilitator):''}!</h2><p>Academic records workspace • ${esc(db.session||'Session not set')}</p></div><div class="home-badge">● Offline Ready</div></section>
+ <div class="grid"><div class="card stat"><div class="label">Total Students</div><div class="num">${db.students.length}</div></div><div class="card stat"><div class="label">Male</div><div class="num">${boys}</div></div><div class="card stat"><div class="label">Female</div><div class="num">${girls}</div></div><div class="card stat"><div class="label">Assessments</div><div class="num">${db.assessments.length}</div></div></div>
+ <div class="section-title"><h3>Open a Section</h3></div><div class="module-grid">
+ ${module('👨‍🎓','Students','Manage and alphabetically save your class register.','students')}
+ ${module('📝','Assessment','Enter CA scores, calculate totals and grades, save and print results.','assessment')}
+ ${module('❓','Question Bank','Create reusable question sets and keep an organized record.','questions')}
+ ${module('📄','Final Examination','Set, prepare and print final examination papers.','terminal')}
+ ${module('⚙️','Administrator Settings','School details, class profiles, facilitator, session, logo and security settings.','settings')}
+ </div><div class="home-footer">Developed by MARAL COMPUTERS KADUNA</div></div>`;
+}
+
+function module(i,t,p,page){return `<button class="module" onclick="showPage('${page}')"><div class="icon">${i}</div><h4>${t}</h4><p>${p}</p><span class="module-arrow">→</span></button>`}
+function studentsPage(){
+ sortStudents();
+ const c=currentClass(), legacy=legacyStudents();
+ const list=c?classStudents():[];
+ const rows=list.map((st,i)=>`<tr><td>${i+1}</td><td><b>${esc(st.name)}</b></td><td>${esc(st.gender||'')}</td><td>${esc(st.admission||'')}</td><td><div class="actions"><button class="primary small" onclick="editStudent('${st.id}')">Edit Name</button><button class="danger small" onclick="deleteStudent('${st.id}')">Delete</button></div></td></tr>`).join('');
+ const classOptions=db.classes.map(x=>`<option value="${x.id}" ${c&&c.id===x.id?'selected':''}>${esc(classLabel(x))} • ${esc(x.session||'')} ${x.term?'• '+esc(x.term):''}</option>`).join('');
+ return `<div class="card"><div class="section-title"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('dashboard')">← Return</button><h3>Student Register</h3></div><div class="actions"><button class="primary" onclick="openClassModal()">+ New Class</button>${c?`<button class="secondary" onclick="openStudentModal()">+ Add Student</button><button class="secondary" onclick="openBulkModal()">Bulk Add</button>`:''}</div></div>
+ <div class="notice"><b>Class details must be set first.</b> Students are kept separately for each class, so one teacher can manage several classes without mixing their records.</div>
+ ${db.classes.length?`<div class="field"><label>Current Class</label><select onchange="switchClass(this.value)"><option value="">Select class</option>${classOptions}</select></div>`:`<div class="notice">No class has been created yet. Create the class details before entering students.</div>`}
+ ${c?`<div class="notice"><b>${esc(classLabel(c))}</b> • Session: ${esc(c.session||'—')} • Term: ${esc(c.term||'—')} ${legacy.length?`<br><br><b>${legacy.length} existing student name${legacy.length===1?'':'s'}</b> from your previous version are preserved. After selecting/creating the correct class, use <b>Assign Existing Names</b> below to keep them.`:''}</div>`:''}
+ ${c&&legacy.length?`<div class="actions" style="margin:10px 0"><button class="primary" onclick="assignLegacyToCurrentClass()">Assign Existing Names to ${esc(classLabel(c))}</button></div>`:''}
+ <div class="section-title"><h3>${c?esc(classLabel(c))+' — '+list.length+' Student'+(list.length===1?'':'s'):'Select a class'}</h3>${c?`<button class="secondary" onclick="printStudents()">Print List</button>`:''}</div>
+ ${c?`<div class="table-wrap"><table class="table"><thead><tr><th>S/N</th><th>Student Name</th><th>Gender</th><th>Admission No.</th><th>Action</th></tr></thead><tbody>${rows||`<tr><td colspan="5" class="empty">No students added to this class yet.</td></tr>`}</tbody></table></div>`:''}</div>`;
+}
+function openClassModal(){
+ openModal('Set Up Class Details',`<div class="row"><div class="field"><label>Class</label><input id="cn" placeholder="e.g. SS3"></div><div class="field"><label>Section / Arm</label><input id="cs" placeholder="e.g. A"></div><div class="field"><label>Session</label><input id="cse" value="${esc(db.session)}" placeholder="e.g. 2026/2027"></div><div class="field"><label>Term</label><input id="ct" value="${esc(db.term)}" placeholder="e.g. First Term"></div></div><div class="notice">This class identity will be attached to every student added from now on. Create a separate class profile for another class.</div><button class="primary" onclick="createClass()">Save Class Details</button>`);
+}
+function createClass(){
+ const name=document.getElementById('cn').value.trim(),section=document.getElementById('cs').value.trim(),session=document.getElementById('cse').value.trim(),term=document.getElementById('ct').value.trim();
+ if(!name)return toast('Enter the class name.');
+ const label=(name+' '+section).trim();
+ const exists=db.classes.find(x=>sameKey(classLabel(x),label)&&sameKey(x.session,session)&&sameKey(x.term,term));
+ if(exists){db.currentClassId=exists.id;save();closeModal();render();return toast('That class already exists and is now selected.');}
+ const c={id:'c_'+Date.now()+Math.random().toString(36).slice(2),name,section,session,term};db.classes.push(c);db.currentClassId=c.id;save();closeModal();render();toast('Class details saved.');
+}
+function switchClass(id){db.currentClassId=id;save();render()}
+function assignLegacyToCurrentClass(){const c=currentClass();if(!c)return toast('Select a class first.');if(!legacyStudents().length)return toast('No unassigned existing names found.');if(confirm(`Assign all ${legacyStudents().length} existing student names to ${classLabel(c)}?`)){db.students.forEach(s=>{if(!s.classId)s.classId=c.id});save();render();toast('Existing student names have been preserved and assigned to this class.')}}
+function openStudentModal(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ openModal(`Add Student — ${classLabel(c)}`,`<div class="notice">Class: <b>${esc(classLabel(c))}</b> • ${esc(c.session||'')} ${c.term?'• '+esc(c.term):''}</div><div class="row"><div class="field full"><label>Student full name</label><input id="sn"></div><div class="field"><label>Gender</label><select id="sg"><option>Male</option><option>Female</option></select></div><div class="field"><label>Admission No. (optional)</label><input id="sa"></div></div><button class="primary" onclick="addStudent()">Save Student</button>`);
+}
+function addStudent(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ const name=document.getElementById('sn').value.trim();if(!name)return toast('Enter the student name.');
+ if(classStudents().some(s=>sameKey(s.name,name))){return toast('Duplicate name: a student with this exact name is already in this class. Please check the name.');}
+ db.students.push({id:Date.now().toString(36)+Math.random(),name,gender:document.getElementById('sg').value,admission:document.getElementById('sa').value.trim(),classId:c.id});
+ sortStudents();save();closeModal();render();toast('Student name saved.');
+}
+function editStudent(id){
+ const st=db.students.find(s=>String(s.id)===String(id));
+ if(!st)return toast('Student not found.');
+ openModal('Edit Student Name',`<div class="notice">Current name: <b>${esc(st.name)}</b></div><div class="field"><label>Student full name</label><input id="editStudentName" value="${esc(st.name)}" autocomplete="off"></div><button class="primary" onclick="saveStudentName('${st.id}')">Save Name</button>`);
+}
+function saveStudentName(id){
+ const st=db.students.find(s=>String(s.id)===String(id));
+ if(!st)return toast('Student not found.');
+ const name=document.getElementById('editStudentName').value.trim();
+ if(!name)return toast('Enter the student name.');
+ const c=currentClass();
+ if(c && classStudents().some(s=>String(s.id)!==String(id)&&sameKey(s.name,name)))return toast('Duplicate name: a student with this exact name is already in this class. Please check the name.');
+ st.name=name;
+ sortStudents();
+ save();closeModal();render();toast('Student name updated. Existing assessment records remain linked to the student.');
+}
+function openBulkModal(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ openModal(`Bulk Add Students — ${classLabel(c)}`,`<div class="notice">These names will be added only to <b>${esc(classLabel(c))}</b>. Existing names from other classes will not be mixed.</div><div class="field"><label>Student names — one per line</label><textarea id="bulk" rows="12" placeholder="Aisha Bello\nAminu Musa\nFatima Sani"></textarea></div><div class="field"><label>Gender for imported names</label><select id="bg"><option value="">Leave blank</option><option>Male</option><option>Female</option></select></div><button class="primary" onclick="bulkAdd()">Import & Save</button>`);
+}
+function bulkAdd(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ const names=document.getElementById('bulk').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),g=document.getElementById('bg').value;
+ const existing=new Set(classStudents().map(s=>s.name.trim().toLowerCase()));let added=0,duplicates=0;
+ names.forEach(name=>{const key=name.trim().toLowerCase();if(existing.has(key)){duplicates++;return}db.students.push({id:Date.now().toString(36)+Math.random(),name,gender:g,admission:'',classId:c.id});existing.add(key);added++});
+ sortStudents();save();closeModal();render();toast(`${added} student${added===1?'':'s'} imported${duplicates?`; ${duplicates} exact duplicate name${duplicates===1?' was':'s were'} skipped in this class`:''}.`);
+}
+function sortStudents(){db.students.sort((a,b)=>String(a.name||'').trim().localeCompare(String(b.name||'').trim(),undefined,{sensitivity:'base',numeric:false}))}
+function deleteStudent(id){if(confirm('Delete this student from this class?')){db.students=db.students.filter(s=>s.id!==id);save();render();}}
+
+function sameKey(a,b){return String(a||'').trim().toLowerCase()===String(b||'').trim().toLowerCase()}
+function finalScoreKey(className,subject,session,term,studentId){return [className,subject,session,term,studentId].map(v=>String(v??'').trim().toLowerCase()).join('::')}
+function cumulativeCA(subject,className){
+  const selected=db.assessments.filter(a=>
+    (!subject || sameKey(a.subject,subject)) &&
+    (!className || sameKey(a.className,className))
+  );
+  const totals={};
+  db.students.forEach(s=>{
+    let earned=0,max=0;
+    selected.forEach(a=>{earned+=Number(a.scores?.[s.id]||0);max+=Number(a.maxMark||0)});
+    totals[s.id]={earned,max,ca40:max?Math.min(40,(earned/max)*40):0};
+  });
+  return {selected,totals};
+}
+function normalizeAssessmentQuestionSet(a){
+  if(!a.questions || !a.questions.length) return;
+  const exists=db.questionSets.some(q=>q.sourceAssessmentId===a.id);
+  if(!exists){
+    db.questionSets.push({
+      id:'qs_'+a.id,
+      sourceAssessmentId:a.id,
+      source:'Assessment',
+      date:a.date,
+      subject:a.subject,
+      className:a.className,
+      questions:a.questions
+    });
+  }
+}
+function assessmentPage(){
+ const list=db.assessments.map((a,i)=>`<tr><td>${i+1}</td><td>${esc(a.date)}</td><td>${esc(a.className)}</td><td>${esc(a.subject)}</td><td>${esc(a.assessmentName)}</td><td>/${a.maxMark}</td><td>${a.questions?.length||0}</td><td><div class="actions"><button class="secondary small" onclick="viewAssessment(${i})">View / Print</button><button class="primary small" onclick="editAssessment(${i})">Edit Scores</button><button class="delete-assessment small" onclick="deleteAssessment(${i})">Delete Assessment</button></div></td></tr>`).join('');
+ return `<div class="card"><div class="section-title"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('dashboard')">← Return</button><h3>Continuous Assessment</h3></div><button class="primary" onclick="newAssessment()">+ New Assessment</button></div>
+ <div class="notice">Every assessment you save is automatically included in the student's cumulative CA record. The system continuously converts the accumulated CA performance to a maximum of <b>40 marks</b>. When examination marks are entered, the final total and grade update automatically.</div>
+ <div class="csv-panel"><h4>CSV Score Sheet for the Form Teacher</h4><p>Download a class-specific spreadsheet template for a teacher to fill, or export the completed subject CA /40 and examination /60 from the live result sheet. The exported CSV uses the columns <b>Student Name, Admission Number, CA, Exam</b> for the form teacher's report app.</p><div class="actions"><button class="secondary" onclick="openCsvTemplateModal()">Download Blank CSV Template</button><button class="secondary" onclick="openFinalResult()">Prepare Filled Scores & Export CSV</button></div></div>
+ <div class="section-title"><h3>Saved Assessments</h3></div><div class="table-wrap"><table class="table"><thead><tr><th>S/N</th><th>Date</th><th>Class</th><th>Subject</th><th>Assessment</th><th>Maximum</th><th>Questions</th><th>Source</th><th></th></tr></thead><tbody>${list||`<tr><td colspan="9" class="empty">No assessment saved yet.</td></tr>`}</tbody></table></div>
+ <div class="section-title"><h3>Live Final Result</h3><button class="primary" onclick="openFinalResult()">Open CA /40 + Exam /60</button></div>
+ </div>`;
+}
+function csvCell(value){const v=String(value??'');return '"'+v.replace(/"/g,'""')+'"'}
+function downloadCsvFile(rows,filename){const csv='\uFEFF'+rows.map(row=>row.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function safeFilePart(value){return String(value||'').trim().replace(/[^a-z0-9_-]+/gi,'_').replace(/^_+|_+$/g,'')||'Class'}
+function openCsvTemplateModal(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ if(!classStudents().length)return toast('Add students to the selected class first.');
+ openModal('Download Blank CSV Score Sheet',`<div class="notice">This creates a spreadsheet containing the registered students for <b>${esc(classLabel(c))}</b>. The teacher can open it in Excel or Google Sheets, fill the CA and Exam columns, save it as CSV, and send it to the form teacher.</div><div class="field"><label>Subject</label><input id="csvTemplateSubject" placeholder="e.g. Mathematics" autocomplete="off"></div><div class="field"><label>Term</label><input id="csvTemplateTerm" value="${esc(c.term||db.term||'')}" placeholder="e.g. First Term"></div><div class="field"><label>Session</label><input id="csvTemplateSession" value="${esc(c.session||db.session||'')}" placeholder="e.g. 2026/2027"></div><button class="primary" onclick="downloadBlankScoreTemplate()">Download CSV Template</button>`);
+}
+function downloadBlankScoreTemplate(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ const subject=document.getElementById('csvTemplateSubject')?.value.trim();const term=document.getElementById('csvTemplateTerm')?.value.trim()||c.term||db.term||'';const session=document.getElementById('csvTemplateSession')?.value.trim()||c.session||db.session||'';
+ if(!subject)return toast('Enter the subject name first.');
+ const students=classStudents().slice().sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),undefined,{sensitivity:'base'}));
+ const rows=[['Student Name','Admission Number','CA','Exam'],...students.map(st=>[st.name,st.admission||'','',''])];
+ const filename=`Dimah_Academy_${safeFilePart(classLabel(c))}_${safeFilePart(subject)}_${safeFilePart(term)}_${safeFilePart(session)}_Score_Template.csv`;
+ downloadCsvFile(rows,filename);closeModal();toast('Blank CSV score sheet downloaded.');
+}
+function exportCompletedScoreCSV(){
+ const ctx=window.activeResultContext;if(!ctx||!ctx.subject||!ctx.className)return toast('Open the live result sheet for a subject first.');
+ const examInputs={};document.querySelectorAll('.exam-score').forEach(inp=>{examInputs[String(inp.dataset.student)]=inp.value.trim()});
+ const allStudents=(ctx.students||[]).slice().sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),undefined,{sensitivity:'base'}));
+ const rows=[['Student Name','Admission Number','CA','Exam']];
+ allStudents.forEach(st=>{const ca=Number(ctx.caById?.[st.id]||0);const raw=examInputs[String(st.id)]??'';const exam=raw===''?'':Math.max(0,Math.min(60,Number(raw)||0));rows.push([st.name,st.admission||'',ca.toFixed(1),exam]);});
+ const filename=`Dimah_Academy_${safeFilePart(ctx.className)}_${safeFilePart(ctx.subject)}_${safeFilePart(ctx.term)}_${safeFilePart(ctx.session)}_CA_Scores.csv`;
+ downloadCsvFile(rows,filename);toast('Completed subject scores exported as CSV for the form teacher.');
+}
+
+function newAssessment(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ const students=classStudents();if(!students.length)return toast('Add students to the selected class first.');
+ openModal('New Continuous Assessment',`<div class="row"><div class="field"><label>Class</label><input id="ac" value="${esc(classLabel(c))}" readonly></div><div class="field"><label>Subject</label><input id="as" placeholder="e.g. Economics"></div><div class="field"><label>Assessment name</label><input id="an" placeholder="e.g. Test 1"></div><div class="field"><label>This assessment is out of</label><input id="am" type="number" min="1" value="10"></div><div class="field full"><label>Questions administered in this assessment</label><textarea id="aq" rows="7" placeholder="Enter one question per line. When the assessment is saved, these questions are automatically added to the Question Bank."></textarea></div></div><div class="notice">The maximum mark is decided by the teacher for this assessment. Its score will automatically contribute to the cumulative CA/40.</div><button class="primary" onclick="createAssessment()">Continue to Scores</button>`);
+}
+function createAssessment(){
+ const max=Math.max(1,Number(document.getElementById('am').value)||0);
+ const questions=document.getElementById('aq').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');const a={id:'a_'+Date.now()+Math.random().toString(36).slice(2),date:new Date().toLocaleDateString(),classId:c.id,className:classLabel(c),subject:document.getElementById('as').value.trim(),assessmentName:document.getElementById('an').value.trim(),maxMark:max,studentCount:classStudents().length,scores:{},questions};
+ if(!a.assessmentName)return toast('Enter an assessment name.');
+ closeModal();showScoreEditor(a);
+}
+function grade(n){n=Number(n)||0;return n>=70?'A':n>=60?'B':n>=50?'C':n>=45?'D':n>=40?'E':'F'}
+function showScoreEditor(a,editingIndex=null){
+ sortStudents();
+ /* Editing always uses the class saved with the assessment. The score field itself is the saved value. */
+ const students=editingIndex!==null && a.classId ? db.students.filter(st=>st.classId===a.classId).sort((x,y)=>x.name.localeCompare(y.name)) : classStudents();
+ const isEditing=editingIndex!==null;
+ const savedScores=(a&&a.scores&&typeof a.scores==='object')?a.scores:{};
+ /* Build fallbacks by student name as well as ID. This keeps old saved records editable even if a student ID was normalized. */
+ const scoreByName={};
+ Object.keys(savedScores).forEach(k=>{ const st=db.students.find(s=>String(s.id)===String(k)); if(st) scoreByName[String(st.name).trim().toLowerCase()]=savedScores[k]; });
+ const rows=students.map((st,i)=>{
+   let raw;
+   if(Object.prototype.hasOwnProperty.call(savedScores,st.id)) raw=savedScores[st.id];
+   else if(Object.prototype.hasOwnProperty.call(savedScores,String(st.id))) raw=savedScores[String(st.id)];
+   else raw=scoreByName[String(st.name).trim().toLowerCase()];
+   const hasPrevious=raw!==undefined && raw!==null && raw!=='' && !Number.isNaN(Number(raw));
+   const shown=hasPrevious?String(Number(raw)):'';
+   return `<tr><td>${i+1}</td><td><span class="student-name">${esc(st.name)}</span></td><td><input class="score edit-score-box" data-id="${esc(st.id)}" type="number" min="0" max="${a.maxMark}" value="${esc(shown)}" placeholder="" inputmode="decimal" autocomplete="off" aria-label="Score for ${esc(st.name)}"></td><td class="live-percent" data-for="${esc(st.id)}">${shown===''?'—':((Number(shown)/a.maxMark)*100).toFixed(1)}</td></tr>`;
+ }).join('');
+ const editNotice=isEditing?`<div class="edit-note">The existing saved score is already inside the <b>Score</b> field. Tap that number, erase it, type the new value, then tap <b>Save Changes</b>. There is no separate previous-score box.</div>`:`<div class="notice">Enter marks out of <b>${a.maxMark}</b>. You can leave a student blank and return later with <b>Edit Scores</b>. The latest saved value is used in the cumulative CA/40.</div>`;
+ document.getElementById('main').innerHTML=`<div class="card"><div class="section-title"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('assessment')">← Return</button><h3>${esc(a.assessmentName)} — ${isEditing?'Edit Scores':'Score Entry'}</h3></div><button class="primary" onclick="saveAssessmentFromEditor(${isEditing?editingIndex:'null'})">${isEditing?'Save Changes':'Save Assessment'}</button></div>${editNotice}<div class="table-wrap"><table class="table score-entry-table"><thead><tr><th>S/N</th><th>Student</th><th>Score / ${a.maxMark}</th><th>%</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+ window.activeAssessment=a;window.activeAssessmentIndex=editingIndex;
+ document.querySelectorAll('.score').forEach(inp=>inp.addEventListener('input',()=>{const raw=inp.value.trim();const el=document.querySelector(`[data-for="${inp.dataset.id}"]`);if(raw===''){el.textContent='—';return}let v=Math.max(0,Math.min(a.maxMark,Number(raw)||0));el.textContent=(v/a.maxMark*100).toFixed(1)}));
+}
+
+function saveAssessmentFromEditor(editingIndex=null){
+ const a=window.activeAssessment;
+ document.querySelectorAll('.score').forEach(x=>{const id=x.dataset.id;if(x.value===''){if(editingIndex!==null)delete a.scores[id];return}a.scores[id]=Math.max(0,Math.min(a.maxMark,Number(x.value)||0))});
+ if(editingIndex===null){db.assessments.push(a);normalizeAssessmentQuestionSet(a);save();showPage('assessment');toast('Assessment saved and added to the live CA record.');}
+ else {db.assessments[editingIndex]=a;normalizeAssessmentQuestionSet(a);save();showPage('assessment');toast('Assessment scores updated successfully.');}
+}
+function editAssessment(i){const a=db.assessments[i];if(!a)return toast('Assessment not found.');showScoreEditor({...a,scores:{...(a.scores||{})}},i);}
+function deleteAssessment(i){
+ const a=db.assessments[i];
+ if(!a)return toast('Assessment not found.');
+ const label=`${a.assessmentName||'this assessment'}${a.subject?' — '+a.subject:''}`;
+ if(!confirm(`Delete \"${label}\"?\n\nThis will remove this assessment and all scores belonging to it. Students, other assessments and your classes will not be deleted.`))return;
+ db.assessments.splice(i,1);
+ save();
+ showPage('assessment');
+ toast('Assessment deleted. CA has been recalculated from the remaining assessments.');
+}
+function openFinalResult(){
+ if(!db.students.length)return toast('Add students first.');
+ openModal('Live Final Result',`<div class="row"><div class="field"><label>Class</label><input id="fc" value="${esc(classLabel(currentClass()||{}))}"><div class="field"><label>Subject</label><input id="fs"></div><div class="field"><label>Session</label><input id="fse" value="${esc(db.session)}"></div><div class="field"><label>Term</label><input id="ft" value="${esc(db.term)}"></div></div><div class="notice">Only saved assessments belonging to the selected <b>class and subject</b> are combined. The current CA is converted to <b>/40</b>. Enter the examination score directly in the EXAM column; no visible entry box is shown. Total and Grade update automatically.</div><button class="primary" onclick="buildFinalResult()">Open Result Sheet</button>`);
+}
+function buildFinalResult(){
+ sortStudents();
+ const subject=document.getElementById('fs').value.trim(), className=document.getElementById('fc').value.trim();
+ const data=cumulativeCA(subject,className);
+ if(!data.selected.length)return toast('No saved assessments found for this subject.');
+ const linkedIds=new Set(); data.selected.forEach(a=>Object.keys(a.scores||{}).forEach(id=>linkedIds.add(id))); const resultStudents=className&&currentClass()&&sameKey(classLabel(currentClass()),className)?classStudents():(linkedIds.size?db.students.filter(s=>linkedIds.has(s.id)):db.students.filter(s=>s.classId));
+ const selectedSession=document.getElementById('fse')?.value.trim()||db.session||'';const selectedTerm=document.getElementById('ft')?.value.trim()||db.term||'';
+ const rows=resultStudents.map((s,i)=>{const ca=data.totals[s.id].ca40;const savedExam=db.finalScores[finalScoreKey(className,subject,selectedSession,selectedTerm,s.id)]??'';const total=ca+(savedExam===''?0:Number(savedExam)||0);return `<tr><td>${i+1}</td><td><b>${esc(s.name)}</b></td><td><input class="result-input exam-score" data-student="${s.id}" type="number" min="0" max="60" value="${esc(savedExam)}" placeholder="—"></td><td class="ca-live" data-student="${s.id}">${ca.toFixed(1)}</td><td class="final-total" data-total="${s.id}">${total.toFixed(1)}</td><td class="final-grade" data-grade="${s.id}">${grade(total)}</td></tr>`}).join('');
+ const exportStudents=className&&currentClass()&&sameKey(classLabel(currentClass()),className)?classStudents():(linkedIds.size?db.students.filter(st=>linkedIds.has(st.id)):db.students.filter(st=>st.classId));
+ window.activeResultContext={subject,className,session:selectedSession,term:selectedTerm,students:exportStudents,caById:Object.fromEntries(exportStudents.map(st=>[st.id,data.totals[st.id]?.ca40||0]))};
+ closeModal();
+ document.getElementById('main').innerHTML=`<div class="card"><div class="print-head" style="display:block"><div class="school-print">${esc(db.school)}</div><div class="title-print">Students' Continuous Assessment Record</div><div style="font-size:12px;margin-top:5px">${esc(className)} • ${esc(subject)} • ${esc(db.session)} ${db.term?'• '+esc(db.term):''}</div></div>
+ <div class="section-title no-print"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('assessment')">← Return</button><h3>Live Final Result Sheet</h3></div><div class="actions"><button class="secondary" onclick="exportCompletedScoreCSV()">Export CSV for Form Teacher</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div></div>
+ <div class="notice no-print">CA is calculated only from saved assessments for this class and subject. Enter examination marks directly in the EXAM column. Then select <b>Export CSV for Form Teacher</b> to download a file with Student Name, Admission Number, CA and Exam.</div>
+ <div class="table-wrap"><table class="table result-table"><thead><tr><th>S/N</th><th>Student</th><th>EXAM / 60</th><th>CA / 40</th><th>TOTAL / 100</th><th>GRADE</th></tr></thead><tbody>${rows}</tbody></table></div>
+ <div class="no-print" style="margin-top:15px"><button class="secondary" onclick="showPage('assessment')">← Return to Assessment</button></div></div>`;
+ document.querySelectorAll('.exam-score').forEach(inp=>{const refresh=()=>{const id=inp.dataset.student;const key=finalScoreKey(className,subject,selectedSession,selectedTerm,id);const raw=inp.value.trim();const ex=raw===''?0:Math.max(0,Math.min(60,Number(raw)||0));if(raw==='')delete db.finalScores[key];else db.finalScores[key]=ex;save();const ca=Number(document.querySelector(`[data-student="${id}"].ca-live`)?.textContent||0);const total=ca+ex;const totalEl=document.querySelector(`[data-total="${id}"]`),gradeEl=document.querySelector(`[data-grade="${id}"]`);if(totalEl)totalEl.textContent=total.toFixed(1);if(gradeEl)gradeEl.textContent=grade(total)};inp.addEventListener('input',refresh);inp.addEventListener('change',refresh);});
+}
+function viewAssessment(i){
+ const a=db.assessments[i];if(!a)return toast('Assessment not found.');
+ const students=db.students.filter(s=>s.classId===a.classId).sort((x,y)=>x.name.localeCompare(y.name));
+ const rows=students.map((s,n)=>{let sc=a.scores[s.id];return `<tr><td>${n+1}</td><td>${esc(s.name)}</td><td>${sc===undefined?'—':sc}</td><td>${sc===undefined?'—':(sc/a.maxMark*100).toFixed(1)}</td></tr>`}).join('');
+ document.getElementById('main').innerHTML=`<div class="card"><div class="print-head"><div class="school-print">${esc(db.school)}</div><div class="title-print">Students' Continuous Assessment Record</div></div><div class="section-title no-print"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('assessment')">← Return</button><h3>${esc(a.assessmentName)}</h3></div><div class="actions"><button class="primary" onclick="editAssessment(${i})">Edit Scores</button><button class="delete-assessment" onclick="deleteAssessment(${i})">Delete Assessment</button><button class="secondary" onclick="window.print()">Print / Save PDF</button></div></div><div class="section-title"><h3>${esc(a.className)} • ${esc(a.subject)} • ${esc(a.date)} • /${a.maxMark}</h3></div><div class="table-wrap"><table class="table"><thead><tr><th>S/N</th><th>Student</th><th>Score / ${a.maxMark}</th><th>Equivalent %</th></tr></thead><tbody>${rows||`<tr><td colspan="4" class="empty">No students in this class.</td></tr>`}</tbody></table></div></div>`;
+}
+function questionsPage(){
+ const list=db.questionSets.map((q,i)=>`<tr><td>${i+1}</td><td>${esc(q.date)}</td><td>${esc(q.subject)}</td><td>${esc(q.className)}</td><td>${q.questions.length}</td><td>${esc(q.source||'Manual')}</td><td><div class="actions"><button class="secondary small" onclick="viewQuestions(${i})">Open</button><button class="primary small" onclick="editQuestionSet(${i})">Edit</button><button class="danger small" onclick="deleteQuestionSet(${i})">Delete</button></div></td></tr>`).join('');
+ return `<div class="card"><div class="section-title"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('dashboard')">← Return</button><h3>Question Bank</h3></div><button class="primary" onclick="newQuestionSet()">+ New Question Set</button></div><div class="notice">Save reusable question sets here. Each set keeps its date and can be reopened later.</div><div class="table-wrap" style="margin-top:15px"><table class="table"><thead><tr><th>S/N</th><th>Date</th><th>Subject</th><th>Class</th><th>Questions</th><th>Source</th><th></th></tr></thead><tbody>${list||`<tr><td colspan="6" class="empty">No question sets yet.</td></tr>`}</tbody></table></div></div>`;
+}
+function newQuestionSet(){
+ openModal('Create Question Set',`<div class="row"><div class="field"><label>Subject</label><input id="qs"></div><div class="field"><label>Class</label><input id="qc"></div><div class="field full"><label>Questions — one question per line</label><textarea id="qq" rows="12" placeholder="1. Define scarcity.\n2. Explain opportunity cost.\n3. ..."></textarea></div></div><button class="primary" onclick="saveQuestionSet()">Save Question Set</button>`);
+}
+function saveQuestionSet(){
+ const questions=document.getElementById('qq').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!questions.length)return toast('Enter at least one question.');
+ db.questionSets.push({date:new Date().toLocaleDateString(),subject:document.getElementById('qs').value.trim(),className:document.getElementById('qc').value.trim(),questions});save();closeModal();render();toast('Question set saved.');
+}
+function viewQuestions(i){
+ const q=db.questionSets[i];openModal(`${q.subject||'Question Set'} — ${q.date}`,`<div class="notice">${esc(q.className||'Class not specified')} • ${q.questions.length} questions</div><ol style="line-height:1.8;font-size:13px">${q.questions.map(x=>`<li>${esc(x)}</li>`).join('')}</ol><button class="primary" onclick="window.print()">Print</button>`);
+}
+function editQuestionSet(i){
+ const q=db.questionSets[i];if(!q)return toast('Question set not found.');
+ openModal('Edit Question Set',`<div class="row"><div class="field"><label>Subject</label><input id="eqs" value="${esc(q.subject||'')}"></div><div class="field"><label>Class</label><input id="eqc" value="${esc(q.className||'')}"></div><div class="field full"><label>Questions — one question per line</label><textarea id="eqq" rows="12">${esc((q.questions||[]).join('\n'))}</textarea></div></div><button class="primary" onclick="saveEditedQuestionSet(${i})">Save Changes</button>`);
+}
+function saveEditedQuestionSet(i){
+ const q=db.questionSets[i];if(!q)return toast('Question set not found.');
+ const questions=document.getElementById('eqq').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!questions.length)return toast('Enter at least one question.');
+ q.subject=document.getElementById('eqs').value.trim();q.className=document.getElementById('eqc').value.trim();q.questions=questions;q.date=q.date||new Date().toLocaleDateString();
+ if(q.sourceExamId){const ex=db.exams.find(e=>e.id===q.sourceExamId);if(ex){ex.subject=q.subject;ex.className=q.className;ex.questions=[...questions];if(ex.objectiveQuestions||ex.essayQuestions){const mid=Math.ceil(questions.length/2);ex.objectiveQuestions=questions.slice(0,mid);ex.essayQuestions=questions.slice(mid);}}}
+ save();closeModal();render();toast('Question set updated successfully.');
+}
+function deleteQuestionSet(i){
+ const q=db.questionSets[i];if(!q)return toast('Question set not found.');
+ if(!confirm(`Delete this question set?\n\n${q.subject||'Question Set'} — ${q.date||''}`))return;
+ db.questionSets.splice(i,1);save();render();toast('Question set deleted.');
+}
+function terminalPage(){
+ const list=db.exams.map((e,i)=>`<tr><td>${i+1}</td><td>${esc(e.date||'')}</td><td>${esc(e.term||'')}</td><td>${esc(e.session||'')}</td><td>${esc(e.subject||'')}</td><td>${esc(e.className||'')}</td><td>${(e.objectiveQuestions||[]).length+(e.essayQuestions||[]).length || (e.questions||[]).length}</td><td><div class="actions"><button class="secondary small" onclick="viewExam(${i})">Open / Print</button><button class="primary small" onclick="editExam(${i})">Edit</button><button class="danger small" onclick="deleteExam(${i})">Delete</button></div></td></tr>`).join('');
+ return `<div class="card"><div class="section-title"><div style="display:flex;align-items:center;gap:10px"><button class="back-btn" onclick="showPage('dashboard')">← Return</button><h3>Final Examination</h3></div><button class="primary" onclick="newExam()">+ Set Final Examination</button></div><div class="notice">Set the examination details and questions first. The printed paper will use the school examination format, including term, session, class, date, time and instructions.</div><div class="table-wrap" style="margin-top:15px"><table class="table"><thead><tr><th>S/N</th><th>Saved Date</th><th>Term</th><th>Session</th><th>Subject</th><th>Class</th><th>Questions</th><th></th></tr></thead><tbody>${list||`<tr><td colspan="8" class="empty">No final examination saved yet.</td></tr>`}</tbody></table></div></div>`;
+}
+function newExam(){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ if(!classStudents().length)return toast('Add students to the selected class first.');
+ openExamEditor(null);
+}
+function openExamEditor(editingIndex){
+ const c=currentClass();if(!c)return toast('Create/select the class details first.');
+ const e=editingIndex===null?null:db.exams[editingIndex];if(editingIndex!==null&&!e)return toast('Examination not found.');
+ const today=e?.examDate||new Date().toISOString().slice(0,10);
+ const objective=e?.objectiveQuestions?.length?e.objectiveQuestions:(e?.questions||[]);
+ const essay=e?.essayQuestions||[];
+ openModal(e?'Edit Final Examination':'Set Final Examination',`<div class="notice"><b>Examination setup</b><br>Fill in the details below. They will appear automatically on the printed examination paper.</div><div class="row">
+ <div class="field"><label>Term</label><input id="et" value="${esc(e?.term||c.term||db.term)}" placeholder="e.g. Second Term"></div>
+ <div class="field"><label>Session</label><input id="ese" value="${esc(e?.session||c.session||db.session)}" placeholder="e.g. 2024/2025 Academic Session"></div>
+ <div class="field"><label>Class</label><input id="ec" value="${esc(e?.className||classLabel(c))}"></div>
+ <div class="field"><label>Subject</label><input id="es" value="${esc(e?.subject||'')}" placeholder="e.g. Economics"></div>
+ <div class="field"><label>Date</label><input id="ed" type="date" value="${esc(today)}"></div>
+ <div class="field"><label>Time</label><input id="ei" type="text" value="${esc(e?.time||'')}" placeholder="e.g. 10:00 AM – 12:00 PM"></div>
+ <div class="field full"><label>Instructions</label><textarea id="ein" rows="4" placeholder="e.g. Answer all the questions in Section A and any three in Section B.">${esc(e?.instructions||'')}</textarea></div>
+ <div class="field full"><label>Section A — Objective Questions</label><textarea id="eo" rows="9" placeholder="Enter one objective question per line.">${esc(objective.join('\n'))}</textarea></div>
+ <div class="field full"><label>Section B — Essay Questions</label><textarea id="ee" rows="8" placeholder="Enter one essay question per line.">${esc(essay.join('\n'))}</textarea></div>
+ </div><button class="primary" onclick="saveExam(${editingIndex===null?'null':editingIndex})">${e?'Save Changes':'Save Final Examination'}</button>`);
+}
+function saveExam(editingIndex=null){
+ const term=document.getElementById('et').value.trim(),session=document.getElementById('ese').value.trim(),className=document.getElementById('ec').value.trim(),subject=document.getElementById('es').value.trim(),date=document.getElementById('ed').value,time=document.getElementById('ei').value.trim(),instructions=document.getElementById('ein').value.trim();
+ const objectiveQuestions=document.getElementById('eo').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ const essayQuestions=document.getElementById('ee').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ if(!subject)return toast('Enter the subject.');
+ if(!objectiveQuestions.length&&!essayQuestions.length)return toast('Enter at least one objective or essay question.');
+ if(editingIndex===null){
+  const exam={id:'e_'+Date.now()+Math.random().toString(36).slice(2),date:date?new Date(date+'T00:00:00').toLocaleDateString():new Date().toLocaleDateString(),examDate:date,term,session,className,subject,time,instructions,objectiveQuestions,essayQuestions,questions:[...objectiveQuestions,...essayQuestions],classId:currentClass()?.id||''};
+  db.exams.push(exam);db.questionSets.push({id:'qs_'+exam.id,sourceExamId:exam.id,source:'Final Examination',date:exam.date,subject:exam.subject,className:exam.className,questions:exam.questions});
+  save();closeModal();render();toast('Final examination saved and added to the Question Bank.');
+ } else {
+  const exam=db.exams[editingIndex];if(!exam)return toast('Examination not found.');
+  exam.date=date?new Date(date+'T00:00:00').toLocaleDateString():new Date().toLocaleDateString();exam.examDate=date;exam.term=term;exam.session=session;exam.className=className;exam.subject=subject;exam.time=time;exam.instructions=instructions;exam.objectiveQuestions=objectiveQuestions;exam.essayQuestions=essayQuestions;exam.questions=[...objectiveQuestions,...essayQuestions];
+  const linked=db.questionSets.find(q=>q.sourceExamId===exam.id);if(linked){linked.date=exam.date;linked.subject=exam.subject;linked.className=exam.className;linked.questions=exam.questions;}
+  save();closeModal();render();toast('Final examination updated successfully.');
+ }
+}
+function editExam(i){openExamEditor(i)}
+function deleteExam(i){
+ const exam=db.exams[i];if(!exam)return toast('Examination not found.');
+ if(!confirm(`Delete this final examination?\n\n${exam.subject||'Final Examination'} — ${exam.className||''}`))return;
+ const id=exam.id;db.exams.splice(i,1);db.questionSets=db.questionSets.filter(q=>q.sourceExamId!==id);save();render();toast('Final examination deleted.');
+}
+function examQuestions(e){
+ const objective=(e.objectiveQuestions&&e.objectiveQuestions.length)?e.objectiveQuestions:(e.questions||[]);
+ const essay=(e.essayQuestions&&e.essayQuestions.length)?e.essayQuestions:[];
+ return {objective,essay};
+}
+function viewExam(i){
+ const e=db.exams[i];if(!e)return toast('Examination not found.');
+ const q=examQuestions(e);
+ const titleTerm=(e.term||'').trim();
+ const titleSession=(e.session||'').trim();
+ const examTitle=titleTerm&&titleSession?`END OF ${esc(titleTerm).toUpperCase()} EXAMINATIONS, ${esc(titleSession).toUpperCase()} ACADEMIC SESSION`:titleSession?`END OF EXAMINATIONS, ${esc(titleSession).toUpperCase()} ACADEMIC SESSION`:'FINAL EXAMINATION';
+ const objectiveHtml=q.objective.length?`<div class="exam-section-title">SECTION A</div><div class="exam-section-sub">OBJECTIVE</div><ol>${q.objective.map(x=>`<li class="exam-question">${esc(x)}</li>`).join('')}</ol>`:'';
+ const essayHtml=q.essay.length?`<div class="exam-section-title">SECTION B (ESSAY)</div><div class="exam-section-sub">Answer any three (3) questions</div><ol>${q.essay.map(x=>`<li class="exam-question exam-essay">${esc(x)}</li>`).join('')}</ol>`:'';
+ const instructions=e.instructions?`<div class="exam-instructions"><span class="exam-label">INSTRUCTIONS:</span> ${esc(e.instructions)}</div>`:'';
+ const dateDisplay=e.examDate?new Date(e.examDate+'T00:00:00').toLocaleDateString():e.date||'';
+ document.getElementById('main').innerHTML=`<div class="card"><div class="exam-print-actions actions no-print"><button class="secondary" onclick="showPage('terminal')">← Return</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div><div class="exam-paper"><div class="exam-paper-head"><div class="exam-paper-school">${esc(db.school)}</div><div class="exam-paper-title">${examTitle}</div></div><div class="exam-meta"><div class="exam-meta-row"><span><span class="exam-label">SUBJECT:</span> ${esc(e.subject||'')}</span><span><span class="exam-label">CLASS:</span> ${esc(e.className||'')}</span></div><div class="exam-meta-row"><span><span class="exam-label">DATE:</span> ${esc(dateDisplay)}</span><span><span class="exam-label">TIME:</span> ${esc(e.time||'')}</span></div></div>${instructions}${objectiveHtml}${essayHtml}</div></div>`;
+}
+function settingsPage(){
+ const classRows=db.classes.map((c,i)=>`<tr><td>${i+1}</td><td><b>${esc(classLabel(c))}</b></td><td>${esc(c.session||'')}</td><td>${esc(c.term||'')}</td><td>${classStudents().length&&c.id===db.currentClassId?'Current':' '}</td></tr>`).join('');
+ return `<div class="card" style="margin-bottom:15px"><div class="section-title"><h3 style="margin:0;color:var(--navy)">Class Profiles</h3><button class="primary" onclick="openClassModal()">+ Add Class</button></div><div class="notice">Create a separate class profile for every class you teach. Student names, assessments and results are kept separate by class.</div><div class="table-wrap"><table class="table"><thead><tr><th>S/N</th><th>Class</th><th>Session</th><th>Term</th><th>Status</th></tr></thead><tbody>${classRows||`<tr><td colspan="5" class="empty">No class profiles created yet.</td></tr>`}</tbody></table></div></div><div class="kpi-grid"><div class="card"><div style="margin-bottom:12px"><button class="back-btn" onclick="showPage('dashboard')">← Return</button></div><h3 style="margin-top:0;color:var(--navy)">School & Display</h3><div class="field"><label>School Name</label><input id="setSchool" value="${esc(db.school)}"></div><div class="field"><label>App Title</label><input id="setTitle" value="${esc(db.title)}"></div><div class="field"><label>Facilitator / Teacher</label><input id="setFac" value="${esc(db.facilitator)}"></div><div class="field"><label>Session</label><input id="setSession" value="${esc(db.session)}" placeholder="e.g. 2026/2027"></div><div class="field"><label>Term</label><input id="setTerm" value="${esc(db.term)}" placeholder="e.g. First Term"></div><button class="primary" onclick="saveSettings()">Save Display Settings</button></div>
+ <div class="card"><h3 style="margin-top:0;color:var(--navy)">School Logo</h3><img src="${logoSrc()}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid #edf2f6"><div class="field"><label>Upload logo</label><input id="logoFile" type="file" accept="image/*"></div><button class="secondary" onclick="saveLogo()">Save Logo</button><p class="small" style="color:var(--muted)">The logo is stored on this device for offline use.</p></div>
+ <div class="card"><h3 style="margin-top:0;color:var(--navy)">Admin Security</h3><div class="field"><label>Username</label><input id="setUser" value="${esc(db.username)}"></div><div class="field"><label>New Password</label><input id="setPass" type="password" placeholder="Leave unchanged if blank"></div><button class="primary" onclick="saveSecurity()">Update Login</button><div class="notice" style="margin-top:12px">Default login for this first build: <b>admin</b> / <b>admin123</b>. Change it here.</div></div>
+ <div class="card"><h3 style="margin-top:0;color:var(--navy)">Data Management</h3><button class="secondary" onclick="exportData()">Export Backup</button> <button class="secondary" onclick="document.getElementById('importFile').click()">Import Backup</button><input id="importFile" type="file" accept=".json" style="display:none" onchange="importData(event)"><button class="danger" onclick="resetData()">Reset All Local Data</button><p class="small" style="color:var(--muted);margin-top:12px">Keep backups because offline data is stored only on this device/browser.</p></div></div>`;
+}
+function saveSettings(){db.school=document.getElementById('setSchool').value.trim()||defaults.school;db.title=document.getElementById('setTitle').value.trim()||defaults.title;db.facilitator=document.getElementById('setFac').value.trim();db.session=document.getElementById('setSession').value.trim();db.term=document.getElementById('setTerm').value.trim();save();applySchoolTheme();document.getElementById('loginSchool').textContent=db.school;document.getElementById('sideSchool').textContent=db.school;document.getElementById('sideLogo').src=logoSrc();document.getElementById('loginLogo').src=logoSrc();toast('Display settings saved.');render()}
+function saveLogo(){const f=document.getElementById('logoFile').files[0];if(!f)return toast('Choose a logo first.');const r=new FileReader();r.onload=()=>{db.logo=r.result;save();applySchoolTheme();document.getElementById('loginLogo').src=logoSrc();document.getElementById('sideLogo').src=logoSrc();toast('Logo saved offline. School colours updated from the logo.');render()};r.readAsDataURL(f)}
+function saveSecurity(){const u=document.getElementById('setUser').value.trim(),p=document.getElementById('setPass').value;if(!u)return toast('Username cannot be empty.');if(p&&p.length<4)return toast('Password must be at least 4 characters.');if(!p&&u===db.username)return toast('No login change was made.');db.username=u;if(p)db.password=p;const auth={username:db.username,password:db.password};localStorage.setItem(KEY+'_auth',JSON.stringify(auth));localStorage.setItem(KEY,JSON.stringify(db));document.getElementById('setPass').value='';document.getElementById('username').value=db.username;document.getElementById('password').value='';toast('Login details saved. Logout and sign in with the new credentials.')}
+function exportData(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='CA_Record_Backup.json';a.click();URL.revokeObjectURL(a.href);toast('Backup exported.')}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);db={...defaults,...x};save();location.reload()}catch(err){toast('Invalid backup file.')}};r.readAsText(f)}
+function resetData(){if(confirm('This will delete all students, assessments, questions and settings stored on this device. Continue?')){localStorage.removeItem(KEY);localStorage.removeItem(KEY+'_logged');localStorage.removeItem(KEY+'_auth');location.reload()}}
+function printStudents(){sortStudents();document.getElementById('main').innerHTML=`<div class="card"><div class="print-head" style="display:block"><div class="school-print">${esc(db.school)}</div><div class="title-print">Student Register</div></div><div class="actions no-print" style="margin-bottom:15px"><button class="secondary" onclick="showPage('students')">Back</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div><table class="table"><thead><tr><th>S/N</th><th>Student Name</th><th>Gender</th><th>Admission No.</th></tr></thead><tbody>${db.students.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.name)}</td><td>${esc(s.gender||'')}</td><td>${esc(s.admission||'')}</td></tr>`).join('')}</tbody></table></div>`}
+function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=30').catch(()=>{}));}
+init();
+</script>
+</body>
+</html>

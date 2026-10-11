@@ -1,0 +1,22 @@
+{
+  "name": "Dimah Academy Students' Continuous Assessment Record",
+  "short_name": "Dimah CA Record",
+  "id": "dimah-academy-ca-record-v32",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "scope": "./",
+  "background_color": "#edf3fa",
+  "theme_color": "#12345a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
